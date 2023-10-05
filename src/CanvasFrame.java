@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class CanvasFrame extends JFrame {
     CanvasFrame() {
@@ -6,6 +7,7 @@ public class CanvasFrame extends JFrame {
         this.setTitle("Etch-a-Sketch");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setResizable(false);
+        this.setPreferredSize(new Dimension(500,500));
         this.pack();
         this.setVisible(true);
 
