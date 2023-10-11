@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Vector;
 
 public class CanvasPanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 1000;
@@ -15,8 +16,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
     final int[] x = new int[GAME_UNITS];
     final int[] y = new int[GAME_UNITS];
 
-    boolean[] xDraw = new boolean[GAME_UNITS];
-    boolean[] yDraw = new boolean[GAME_UNITS];
+    Color[] color = new Color[GAME_UNITS];
 
     /*
     R = right
@@ -25,9 +25,11 @@ public class CanvasPanel extends JPanel implements ActionListener {
     D = down
      */
     char direction = 'N';
+    Color lineColor = Color.BLACK;
     boolean brushLifted = false;
     boolean running = false;
     Timer timer;
+
 
 
     CanvasPanel() {
@@ -35,7 +37,6 @@ public class CanvasPanel extends JPanel implements ActionListener {
         this.setBackground(Color.GRAY);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
-        
         start();
     }
     
@@ -49,16 +50,12 @@ public class CanvasPanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         draw(g);
-
     }
     public void draw(Graphics g) {
         if (running) {
-            //draws the grid
-
-
+            // draw the line
             for (int i = 0; i < GAME_UNITS-1; i++) {
-                g.setColor(Color.BLACK);
-                //System.out.println(x[i]);
+                g.setColor(color[i]);
                 g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
             }
         }
@@ -69,6 +66,8 @@ public class CanvasPanel extends JPanel implements ActionListener {
             for(int i = GAME_UNITS-1; i > 0; i--) {
                 x[i] = x[i-1];
                 y[i] = y[i-1];
+                
+                color[i] = color[i-1];
             }
         }
 
@@ -81,15 +80,15 @@ public class CanvasPanel extends JPanel implements ActionListener {
                 break;
             case 'L':
                 x[0] = x[0] - UNIT_SIZE;
-                System.out.println(x[0]);
                 break;
             case 'R':
                 x[0] = x[0] + UNIT_SIZE;
-                System.out.println(x[0]);
                 break;
         }
+    }
 
-        System.out.println("");
+    public Color getLineColor() {
+        return lineColor;
     }
 
     public void checkCollisions() {
@@ -99,15 +98,15 @@ public class CanvasPanel extends JPanel implements ActionListener {
         }
         //checks if head collides with right border
         if(x[0] > SCREEN_WIDTH) {
-            running = false;
+            x[0] = SCREEN_WIDTH;
         }
         //checks if head collides with top border
         if(y[0] < 0) {
-            running = false;
+            y[0] = 0;
         }
         //checks if head collides with bottom border
         if(y[0] > SCREEN_HEIGHT) {
-            running = false;
+            y[0] = SCREEN_HEIGHT;
         }
     }
 
@@ -115,6 +114,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(running) {
             move();
+            checkCollisions();
         }
         repaint();
     }
@@ -122,7 +122,6 @@ public class CanvasPanel extends JPanel implements ActionListener {
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     direction = 'L';
@@ -139,6 +138,33 @@ public class CanvasPanel extends JPanel implements ActionListener {
                 case KeyEvent.VK_Q:
                     brushLifted = true;
                     break;
+                case KeyEvent.VK_1:
+                    color[0] = Color.BLACK;
+                    break;
+                case KeyEvent.VK_2:
+                    color[0] = Color.blue;
+                    break;
+                case KeyEvent.VK_3:
+                    color[0] = Color.green;
+                    break;
+                case KeyEvent.VK_4:
+                    color[0] = Color.red;
+                    break;
+                case KeyEvent.VK_5:
+                    color[0] = Color.orange;
+                    break;
+                case KeyEvent.VK_6:
+                    color[0] = Color.pink;
+                    break;
+                case KeyEvent.VK_7:
+                    color[0] = Color.yellow;
+                    break;
+                case KeyEvent.VK_8:
+                    color[0] = new Color(139, 0, 255);
+                    break;
+                case KeyEvent.VK_9:
+                    color[0] = new Color(255, 255, 255);
+                    break;
             }
         }
         @Override
@@ -150,9 +176,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
                 case KeyEvent.VK_Q:
                     brushLifted = false;
                     break;
-
             }
-
         }
     }
 }
