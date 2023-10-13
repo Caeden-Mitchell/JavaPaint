@@ -7,10 +7,12 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
 public class CanvasPanel extends JPanel implements ActionListener {
-    static final int SCREEN_WIDTH = 800;
-    static final int SCREEN_HEIGHT = 800;
+    static final int SCREEN_WIDTH = 1000;
+    static final int SCREEN_HEIGHT = 1000;
+    static final int CANVAS_WIDTH = 1000;
+    static final int CANVAS_HEIGHT = 950;
     static final int UNIT_SIZE = 10;
-    static final int GAME_UNITS = (SCREEN_WIDTH*SCREEN_HEIGHT)/UNIT_SIZE;
+    static final int GAME_UNITS = (CANVAS_WIDTH*CANVAS_HEIGHT)/UNIT_SIZE;
     static final int DELAY = 75;
     final int[] x = new int[GAME_UNITS];
     final int[] y = new int[GAME_UNITS];
@@ -27,6 +29,11 @@ public class CanvasPanel extends JPanel implements ActionListener {
     boolean brushLifted = false;
     boolean running = false;
     Timer timer;
+
+    int startAngle = 270;
+    static int ARC_ANGLE = 180;
+    int xTemp = 0;
+    int yTemp = 0;
 
     CanvasPanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -48,13 +55,36 @@ public class CanvasPanel extends JPanel implements ActionListener {
         draw(g);
     }
     public void draw(Graphics g) {
+
         if (running) {
             // draw the line
             for (int i = 0; i < lineLength; i++) {
-                g.setColor(color[i]);
-                g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                if (i == 0) {
+                    g.setColor(color[i]);
+                    switch (direction) {
+                        case 'R' -> { xTemp = x[i] - (UNIT_SIZE/2);
+                                      yTemp =y[i];}
+                        case 'L' -> { xTemp = x[i] + (UNIT_SIZE/2);
+                            yTemp = y[i];}
+                        case 'U' -> { yTemp = y[i] + (UNIT_SIZE/2);
+                                      xTemp = x[i];}
+                        case 'D' -> { yTemp = y[i] - (UNIT_SIZE/2);
+                                      xTemp = x[i];}
+                    }
+                    g.fillArc(xTemp, yTemp, UNIT_SIZE, UNIT_SIZE, startAngle, ARC_ANGLE);
+                } else {
+                    g.setColor(color[i]);
+                    g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                }
             }
         }
+
+    }
+
+    public void drawColorWall(Graphics g) {
+        g.setColor(Color.white);
+        g.fillRect(0,0,SCREEN_WIDTH, (SCREEN_HEIGHT-CANVAS_HEIGHT));
+        //g.fillRect();
     }
 
     public void move() {
@@ -69,10 +99,14 @@ public class CanvasPanel extends JPanel implements ActionListener {
         }
 
         switch (direction) {
-            case 'U' -> y[0] = y[0] - UNIT_SIZE;
-            case 'D' -> y[0] = y[0] + UNIT_SIZE;
-            case 'L' -> x[0] = x[0] - UNIT_SIZE;
-            case 'R' -> x[0] = x[0] + UNIT_SIZE;
+            case 'U' -> { y[0] = y[0] - UNIT_SIZE;
+                          startAngle = 360;}
+            case 'D' -> { y[0] = y[0] + UNIT_SIZE;
+                          startAngle = 180;}
+            case 'L' -> { x[0] = x[0] - UNIT_SIZE;
+                          startAngle = 90;}
+            case 'R' -> { x[0] = x[0] + UNIT_SIZE;
+                          startAngle = 270;}
         }
     }
 
@@ -85,20 +119,20 @@ public class CanvasPanel extends JPanel implements ActionListener {
             }
         }
         //checks if head collides with left border
-        if(x[0] < 0) {
-            x[0] = 0;
+        if(x[0] < (SCREEN_WIDTH-CANVAS_WIDTH)) {
+            x[0] = (SCREEN_WIDTH-CANVAS_WIDTH);
         }
         //checks if head collides with right border
         if(x[0] > SCREEN_WIDTH) {
             x[0] = SCREEN_WIDTH-2;
         }
         //checks if head collides with top border
-        if(y[0] < 0) {
-            y[0] = 0;
+        if(y[0] < (SCREEN_HEIGHT-CANVAS_HEIGHT)) {
+            y[0] = (SCREEN_HEIGHT-CANVAS_HEIGHT);
         }
         //checks if head collides with bottom border
         if(y[0] > SCREEN_HEIGHT) {
-            y[0] = SCREEN_HEIGHT-2;
+            y[0] =SCREEN_HEIGHT-2;
         }
     }
 
