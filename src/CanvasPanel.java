@@ -17,6 +17,8 @@ public class CanvasPanel extends JPanel implements ActionListener {
     final int[] x = new int[GAME_UNITS];
     final int[] y = new int[GAME_UNITS];
     Color[] color = new Color[GAME_UNITS];
+    Color[] wallColors = {Color.BLACK, Color.blue, Color.green, Color.red,Color.orange, Color.pink, Color.yellow, new Color(139, 0, 255), new Color(255, 255, 255)};
+
     int lineLength = 1;
 
     /*
@@ -29,11 +31,10 @@ public class CanvasPanel extends JPanel implements ActionListener {
     boolean brushLifted = false;
     boolean running = false;
     Timer timer;
-
     int startAngle = 270;
     static int ARC_ANGLE = 180;
-    int xTemp = 0;
-    int yTemp = 0;
+    int xTemp = -5;
+    int yTemp = 50;
 
     CanvasPanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -55,7 +56,6 @@ public class CanvasPanel extends JPanel implements ActionListener {
         draw(g);
     }
     public void draw(Graphics g) {
-
         if (running) {
             // draw the line
             for (int i = 0; i < lineLength; i++) {
@@ -65,7 +65,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
                         case 'R' -> { xTemp = x[i] - (UNIT_SIZE/2);
                                       yTemp =y[i];}
                         case 'L' -> { xTemp = x[i] + (UNIT_SIZE/2);
-                            yTemp = y[i];}
+                                      yTemp = y[i];}
                         case 'U' -> { yTemp = y[i] + (UNIT_SIZE/2);
                                       xTemp = x[i];}
                         case 'D' -> { yTemp = y[i] - (UNIT_SIZE/2);
@@ -77,14 +77,18 @@ public class CanvasPanel extends JPanel implements ActionListener {
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
             }
+            drawColorWall(g);
         }
-
     }
 
     public void drawColorWall(Graphics g) {
-        g.setColor(Color.white);
+        g.setColor(new Color(104, 104, 104));
         g.fillRect(0,0,SCREEN_WIDTH, (SCREEN_HEIGHT-CANVAS_HEIGHT));
-        //g.fillRect();
+        for (int i = 0; i < wallColors.length; i++){
+            g.setColor(wallColors[i]);
+            g.fillRect(i*UNIT_SIZE*10 + 80, 15, 20, 20);
+        }
+
     }
 
     public void move() {
