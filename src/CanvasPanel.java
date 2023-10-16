@@ -2,8 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.Arrays;
 
 public class CanvasPanel extends JPanel implements ActionListener {
@@ -36,13 +35,24 @@ public class CanvasPanel extends JPanel implements ActionListener {
     int xTemp = -5;
     int yTemp = 50;
 
+    JButton colorButton;
+
     CanvasPanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.GRAY);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+
+        initColorButton();
+        this.add(colorButton);
         Arrays.fill(color, Color.BLACK);
         start();
+    }
+
+    public void initColorButton() {
+        colorButton = new JButton("Colour");
+        colorButton.addActionListener(this);
+        colorButton.setPreferredSize(new Dimension(100,40));
     }
     
     public void start() {
@@ -142,11 +152,15 @@ public class CanvasPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(running) {
-            move();
-            checkCollisions();
+        if (e.getSource() == colorButton) {
+            new ColorWheelFrame();
+        } else {
+            if(running) {
+                move();
+                checkCollisions();
+            }
+            repaint();
         }
-        repaint();
     }
     
     public class MyKeyAdapter extends KeyAdapter {

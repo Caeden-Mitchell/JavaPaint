@@ -1,3 +1,3 @@
 public class EtchASketch {
-    public static void main(String[] args) {new ColorWheelFrame();}
+    public static void main(String[] args) {new CanvasFrame();}
 }
