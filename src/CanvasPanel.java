@@ -35,19 +35,22 @@ public class CanvasPanel extends JPanel implements ActionListener {
     int xTemp = -5;
     int yTemp = 50;
 
+    ColorWheelPanel colorWheel = new ColorWheelPanel();
     JButton colorButton;
+
+
 
     CanvasPanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.GRAY);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
-
         initColorButton();
         this.add(colorButton);
         Arrays.fill(color, Color.BLACK);
         start();
     }
+
 
     public void initColorButton() {
         colorButton = new JButton("Colour");
@@ -70,7 +73,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
             // draw the line
             for (int i = 0; i < lineLength; i++) {
                 if (i == 0) {
-                    g.setColor(color[i]);
+                    g.setColor(colorWheel.getColor());
                     switch (direction) {
                         case 'R' -> { xTemp = x[i] - (UNIT_SIZE/2);
                                       yTemp =y[i];}
@@ -107,20 +110,19 @@ public class CanvasPanel extends JPanel implements ActionListener {
             for(int i = lineLength; i > 0; i--) {
                 x[i] = x[i-1];
                 y[i] = y[i-1];
-                
+
                color[i] = color[i-1];
             }
         }
-
         switch (direction) {
             case 'U' -> { y[0] = y[0] - UNIT_SIZE;
-                          startAngle = 360;}
+                startAngle = 360;}
             case 'D' -> { y[0] = y[0] + UNIT_SIZE;
-                          startAngle = 180;}
+                startAngle = 180;}
             case 'L' -> { x[0] = x[0] - UNIT_SIZE;
-                          startAngle = 90;}
+                startAngle = 90;}
             case 'R' -> { x[0] = x[0] + UNIT_SIZE;
-                          startAngle = 270;}
+                startAngle = 270;}
         }
     }
 

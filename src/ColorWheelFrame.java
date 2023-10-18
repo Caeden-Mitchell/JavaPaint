@@ -4,7 +4,7 @@ public class ColorWheelFrame extends JFrame {
     ColorWheelFrame(){
         this.add(new ColorWheelPanel());
         this.setTitle("Etch-a-Sketch");
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.setResizable(false);
         this.pack();
         this.setVisible(true);

@@ -3,7 +3,7 @@ import java.awt.*;
 public class ColorHandler {
     int hue;
     double saturation;
-    double value;
+    double value = 1.0;
     int redValue;
     int greenValue;
     int blueValue;
@@ -23,6 +23,14 @@ public class ColorHandler {
 
     public void setSaturation(double var) {
         saturation = var;
+    }
+
+    public void setRgbColor() {
+        System.out.println("red: " + redValue );
+        System.out.println("green: " + greenValue);
+        System.out.println("blue: " + blueValue);
+        rgbColor = hsvToRgb();
+
     }
 
     public Color getRgbColor() {
@@ -62,6 +70,8 @@ public class ColorHandler {
         redValue = (int)(red * 255);
         greenValue = (int)(green * 255);
         blueValue = (int)(blue * 255);
+
+
 
         return new Color(redValue, greenValue, blueValue);
     }

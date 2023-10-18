@@ -18,6 +18,7 @@ public class ColorWheelPanel extends JComponent {
     public ColorWheelPanel() {
         setPreferredSize(new Dimension(400, 400));
         addMouseListener(new MyMouseListener());
+        setFocusable(false);
     }
 
     public BufferedImage getImage() {
@@ -55,6 +56,10 @@ public class ColorWheelPanel extends JComponent {
         return angle;
     }
 
+    public Color getColor() {
+        return colorHandler.getRgbColor();
+    }
+
     public class MyMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -70,6 +75,7 @@ public class ColorWheelPanel extends JComponent {
                 angle = checkAngle(yCoord, xCoord);
                 colorHandler.setHue(angle);
                 colorHandler.setSaturation(distanceFromRadius/RADIUS);
+                colorHandler.setRgbColor();
             }
         }
     }
