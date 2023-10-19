@@ -15,6 +15,9 @@ public class CanvasPanel extends JPanel implements ActionListener {
     static final int DELAY = 75;
     final int[] x = new int[GAME_UNITS];
     final int[] y = new int[GAME_UNITS];
+
+    int xCoord;
+    int yCoord;
     Color[] color = new Color[GAME_UNITS];
     Color[] wallColors = {Color.BLACK, Color.blue, Color.green, Color.red,Color.orange, Color.pink, Color.yellow, new Color(139, 0, 255), new Color(255, 255, 255)};
 
@@ -36,6 +39,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
     int yTemp = 50;
 
     ColorWheelPanel colorWheel = new ColorWheelPanel();
+    ColorWheelFrame colorWheelFrame = new ColorWheelFrame();
     JButton colorButton;
 
 
@@ -45,6 +49,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
         this.setBackground(Color.GRAY);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+        this.addMouseMotionListener(new MyMouseAdapter());
         initColorButton();
         this.add(colorButton);
         Arrays.fill(color, Color.BLACK);
@@ -62,37 +67,9 @@ public class CanvasPanel extends JPanel implements ActionListener {
         running = true;
         timer = new Timer(DELAY, this);
         timer.start();
-        repaint();
+       // repaint();
     }
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        draw(g);
-    }
-    public void draw(Graphics g) {
-        if (running) {
-            // draw the line
-            for (int i = 0; i < lineLength; i++) {
-                if (i == 0) {
-                    g.setColor(colorWheel.getColor());
-                    switch (direction) {
-                        case 'R' -> { xTemp = x[i] - (UNIT_SIZE/2);
-                                      yTemp =y[i];}
-                        case 'L' -> { xTemp = x[i] + (UNIT_SIZE/2);
-                                      yTemp = y[i];}
-                        case 'U' -> { yTemp = y[i] + (UNIT_SIZE/2);
-                                      xTemp = x[i];}
-                        case 'D' -> { yTemp = y[i] - (UNIT_SIZE/2);
-                                      xTemp = x[i];}
-                    }
-                    g.fillArc(xTemp, yTemp, UNIT_SIZE, UNIT_SIZE, startAngle, ARC_ANGLE);
-                } else {
-                    g.setColor(color[i]);
-                    g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
-                }
-            }
-            drawColorWall(g);
-        }
-    }
+
 
     public void drawColorWall(Graphics g) {
         g.setColor(new Color(104, 104, 104));
@@ -152,19 +129,118 @@ public class CanvasPanel extends JPanel implements ActionListener {
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == colorButton) {
-            new ColorWheelFrame();
-        } else {
-            if(running) {
-                move();
-                checkCollisions();
-            }
-            repaint();
+    public void handleFocus() {
+        if (!colorWheelFrame.hasFocus()) {
+            this.requestFocus();
         }
     }
-    
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        handleFocus();
+
+        color[0] = colorWheel.getColor();
+
+        if (e.getSource() == colorButton) {
+            colorWheelFrame.setVisible(true);
+            colorWheelFrame.requestFocus();
+        }
+        if(running) {
+            move();
+            checkCollisions();
+        }
+        //repaint();
+    }
+
+    public class MyMouseAdapter extends MouseAdapter {
+        private int prevX;
+        private int prevY;
+
+        boolean isDrawing = false;
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            int x = e.getX();
+            int y = e.getY();
+
+            System.out.println(isDrawing);
+
+            if (prevX >= 0 && prevY >= 0) {
+                drawLineBetweenPoints(prevX, prevY, x, y);
+            }
+            isDrawing = true;
+            //prevX = x;
+            //prevY = y;
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            prevX = e.getX();
+            prevY = e.getY();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            prevX = -1;
+            prevY = -1;
+            isDrawing = false;
+        }
+
+        private void drawLineBetweenPoints(int startX, int startY, int endX, int endY) {
+            Graphics g = getGraphics();
+            g.setColor(color[0]);
+
+
+             int distanceThreshold = 50;
+
+             int distanceBetweenPoints = (int) Math.sqrt(Math.pow((startX - endX),2) + Math.pow((startY - endY),2));
+
+            System.out.println(isDrawing);
+
+            if (distanceBetweenPoints < distanceThreshold || isDrawing) {
+                int dx = Math.abs(endX - startX);
+                int dy = Math.abs(endY - startY);
+                int sx, sy;
+
+                if (startX < endX) {
+                    sx = 1;
+                } else {
+                    sx = -1;
+                }
+
+                if (startY < endY) {
+                    sy = 1;
+                } else {
+                    sy = -1;
+                }
+
+                int err = dx - dy;
+                int e2;
+
+                while (true) {
+                    g.fillOval(startX, startY, 10, 10);
+
+                    if (startX == endX && startY == endY) {
+                        break;
+                    }
+
+                    e2 = 2 * err;
+
+                    if (e2 > -dy) {
+                        err = err - dy;
+                        startX = startX + sx;
+                    }
+
+                    if (e2 < dx) {
+                        err = err + dx;
+                        startY = startY + sy;
+                    }
+                }
+            }
+        }
+    }
+
+
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
@@ -181,8 +257,8 @@ public class CanvasPanel extends JPanel implements ActionListener {
                 case KeyEvent.VK_5 -> color[0] = Color.orange;
                 case KeyEvent.VK_6 -> color[0] = Color.pink;
                 case KeyEvent.VK_7 -> color[0] = Color.yellow;
-                case KeyEvent.VK_8 ->color[0] = new Color(139, 0, 255);//purple
-                case KeyEvent.VK_9 ->color[0] = new Color(255, 255, 255);//white
+                case KeyEvent.VK_8 -> color[0] = new Color(139, 0, 255);//purple
+                case KeyEvent.VK_9 -> color[0] = new Color(255, 255, 255);//white
             }
         }
         @Override

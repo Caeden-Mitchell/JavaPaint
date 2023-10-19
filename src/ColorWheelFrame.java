@@ -7,7 +7,7 @@ public class ColorWheelFrame extends JFrame {
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.setResizable(false);
         this.pack();
-        this.setVisible(true);
+        //this.setVisible(true);
 
         this.setLocationRelativeTo(null);
 
