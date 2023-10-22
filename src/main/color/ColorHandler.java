@@ -1,3 +1,5 @@
+package main.color;
+
 import java.awt.*;
 
 public class ColorHandler {

@@ -1,8 +1,9 @@
+package main.canvas;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class CanvasFrame extends JFrame {
-    CanvasFrame() {
+    public CanvasFrame() {
         this.add(new CanvasPanel());
         this.setTitle("Etch-a-Sketch");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);

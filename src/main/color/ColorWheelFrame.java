@@ -1,7 +1,9 @@
+package main.color;
+
 import javax.swing.*;
 
 public class ColorWheelFrame extends JFrame {
-    ColorWheelFrame(){
+    public ColorWheelFrame(){
         this.add(new ColorWheelPanel());
         this.setTitle("Etch-a-Sketch");
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
