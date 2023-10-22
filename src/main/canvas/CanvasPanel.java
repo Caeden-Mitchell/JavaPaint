@@ -106,14 +106,13 @@ public class CanvasPanel extends JPanel implements ActionListener {
             Graphics g = getGraphics();
             g.setColor(color);
 
-            int distanceThreshold = 5;
-
+            int distanceThreshold = 10;
 
             int distanceBetweenPoints = (int) Math.sqrt(Math.pow((startX - endX),2) + Math.pow((startY - endY),2));
 
             double mouseSpeed = ((double) distanceBetweenPoints /elapsedTimeSec)*10;
 
-            if (distanceBetweenPoints < distanceThreshold || mouseSpeed > 3.0) {
+            if (distanceBetweenPoints < distanceThreshold || mouseSpeed > 0.5) {
                 int dx = Math.abs(endX - startX);
 
                 int dy = Math.abs(endY - startY);
