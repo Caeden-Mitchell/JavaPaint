@@ -73,9 +73,6 @@ public class ColorHandler {
         greenValue = (int)(green * 255);
         blueValue = (int)(blue * 255);
 
-
-
         return new Color(redValue, greenValue, blueValue);
     }
-
 }

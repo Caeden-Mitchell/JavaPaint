@@ -16,14 +16,13 @@ public class ColorWheelPanel extends JComponent {
 
     static ColorHandler colorHandler = new ColorHandler();
 
-
     public ColorWheelPanel() {
         setPreferredSize(new Dimension(400, 400));
         addMouseListener(new MyMouseListener());
         setFocusable(false);
     }
 
-    public BufferedImage getImage() {
+    private BufferedImage getImage() {
         BufferedImage image = null;
         try {
             image = ImageIO.read(getFileFromResourceAsStream());
@@ -50,7 +49,7 @@ public class ColorWheelPanel extends JComponent {
         g.drawImage(getImage(),0,0,this);
     }
 
-    public int checkAngle(int y, int x) {
+    private int checkAngle(int y, int x) {
         angle = (int) Math.toDegrees(Math.atan2(y, x));
         if (angle < 0) {
             return angle += 360;
