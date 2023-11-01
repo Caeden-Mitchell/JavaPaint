@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Etch-A-Sketch:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Etch_A_Sketch_jar</output-path>
+    <root id="archive" name="Etch-A-Sketch.jar">
+      <element id="module-output" name="Etch-A-Sketch" />
+    </root>
+  </artifact>
+</component>
