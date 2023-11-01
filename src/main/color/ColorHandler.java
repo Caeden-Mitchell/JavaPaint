@@ -11,6 +11,10 @@ public class ColorHandler {
     int blueValue;
     Color rgbColor;
 
+    public void setValue(double var) {
+        value = var;
+    }
+
     public int getHue() {
         return hue;
     }
@@ -28,23 +32,23 @@ public class ColorHandler {
     }
 
     public void setRgbColor() {
-        System.out.println("red: " + redValue );
-        System.out.println("green: " + greenValue);
-        System.out.println("blue: " + blueValue);
-        rgbColor = hsvToRgb();
+        //System.out.println("red: " + redValue );
+        //System.out.println("green: " + greenValue);
+        //System.out.println("blue: " + blueValue);
+        rgbColor = hsvToRgb(hue, saturation, value);
 
     }
 
     public Color getRgbColor() {
-        return rgbColor = hsvToRgb();
+        return rgbColor = hsvToRgb(hue, saturation, value);
     }
 
 
-    public Color hsvToRgb() {
-        double hp = hue/60.0;
-        double chroma = saturation * value;
+    public Color hsvToRgb(int h, double s, double v) {
+        double hp = h/60.0;
+        double chroma = s * v;
         double x = chroma * (1 - Math.abs(hp % 2.0 - 1));
-        double m = value - chroma;
+        double m = v - chroma;
         double red = 0, green = 0, blue = 0;
         if (hp <= 1) {
             red = chroma;
