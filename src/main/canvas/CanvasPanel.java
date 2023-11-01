@@ -12,6 +12,7 @@ import java.awt.event.*;
 public class CanvasPanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 1000;
     static final int SCREEN_HEIGHT = 1000;
+    static final Color BACKGROUND_COLOR = Color.white;
 
     static final int DELAY = 75;
     Timer timer;
@@ -40,6 +41,9 @@ public class CanvasPanel extends JPanel implements ActionListener {
         colorButton = new JButton("Colour");
         colorButton.addActionListener(this);
         colorButton.setPreferredSize(new Dimension(100,40));
+        colorButton.setOpaque(true);
+        //colorButton.setBackground(Color.black);
+
     }
     
     private void start() {
@@ -72,7 +76,6 @@ public class CanvasPanel extends JPanel implements ActionListener {
         private int prevX;
         private int prevY;
 
-        boolean isDrawing = false;
         long start;
         long elapsedTimeSec;
 
@@ -83,18 +86,15 @@ public class CanvasPanel extends JPanel implements ActionListener {
 
             elapsedTimeSec =  (System.nanoTime() - start) /100000;
 
-
             if (prevX >= 0 && prevY >= 0) {
                 drawLineBetweenPoints(prevX, prevY, x, y);
             }
-            isDrawing = true;
 
             prevX = x;
             prevY = y;
 
             start = System.nanoTime();
         }
-
 
         @Override
         public void mouseReleased(MouseEvent e) {
