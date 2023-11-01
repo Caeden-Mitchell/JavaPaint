@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.*;
+
 public class CanvasPanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 1000;
     static final int SCREEN_HEIGHT = 1000;
@@ -35,19 +36,19 @@ public class CanvasPanel extends JPanel implements ActionListener {
     }
 
 
-    public void initColorButton() {
+    private void initColorButton() {
         colorButton = new JButton("Colour");
         colorButton.addActionListener(this);
         colorButton.setPreferredSize(new Dimension(100,40));
     }
     
-    public void start() {
+    private void start() {
         running = true;
         timer = new Timer(DELAY, this);
         timer.start();
     }
 
-    public void handleFocus() {
+    private void handleFocus() {
         if (!colorWheelFrame.hasFocus()) {
             this.requestFocus();
         }
@@ -106,14 +107,13 @@ public class CanvasPanel extends JPanel implements ActionListener {
             Graphics g = getGraphics();
             g.setColor(color);
 
-            int distanceThreshold = 5;
-
+            int distanceThreshold = 10;
 
             int distanceBetweenPoints = (int) Math.sqrt(Math.pow((startX - endX),2) + Math.pow((startY - endY),2));
 
             double mouseSpeed = ((double) distanceBetweenPoints /elapsedTimeSec)*10;
 
-            if (distanceBetweenPoints < distanceThreshold || mouseSpeed > 3.0) {
+            if (distanceBetweenPoints < distanceThreshold || mouseSpeed > 0.5) {
                 int dx = Math.abs(endX - startX);
 
                 int dy = Math.abs(endY - startY);
