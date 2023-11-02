@@ -13,10 +13,9 @@ public class ColorWheelPanel extends JComponent {
     final String FILE_NAME = "Color_Wheel.png";
     static final int RADIUS = 200;
     int angle = 0;
-
     int circleX = 200;
     int circleY = 200;
-    int sliderX = 390;
+    int sliderX = 10;
 
     Color initialColor = Color.white;
 
@@ -26,7 +25,7 @@ public class ColorWheelPanel extends JComponent {
     public ColorWheelPanel() {
         setPreferredSize(new Dimension(400, 450));
         addMouseListener(new MyMouseListener());
-        //addMouseMotionListener(new MyMouseListener());
+        addMouseMotionListener(new MyMouseListener());
         setFocusable(false);
     }
 
@@ -88,7 +87,7 @@ public class ColorWheelPanel extends JComponent {
 
     private void drawColorPreview(Graphics g) {
         g.setColor(Color.black);
-        g.drawRect(1,1,57,57);
+        g.drawRect(1,1,56,56);
         g.setColor(getColor());
         g.fillRect(2,2,55,55);
 
@@ -126,10 +125,11 @@ public class ColorWheelPanel extends JComponent {
                 COLOR_HANDLER.setSaturation(distanceFromRadius/RADIUS);
                 COLOR_HANDLER.setRgbColor();
 
-                initialColor = COLOR_HANDLER.hsvToRgb(angle,1.0, 1.0);
+                initialColor = COLOR_HANDLER.hsvToRgb(angle,distanceFromRadius/RADIUS, 1.0);
             } else if (x >= 10 && x <= 390 && y >= 405) {
                 sliderX = x;
                 COLOR_HANDLER.setValue((double) (x - 10)/380);
+                COLOR_HANDLER.setRgbColor();
             }
         }
     }

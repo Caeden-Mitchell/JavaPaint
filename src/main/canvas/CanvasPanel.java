@@ -18,20 +18,41 @@ public class CanvasPanel extends JPanel implements ActionListener {
     final ColorWheelPanel COLOR_WHEEL_PANEL = new ColorWheelPanel();
     final ColorWheelFrame COLOR_WHEEL_FRAME = new ColorWheelFrame();
     JButton colorButton;
+    JButton eraserButton;
+    JButton brushButton;
     Color color;
 
     boolean running = false;
+    boolean eraserActive = false;
 
     CanvasPanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.setBackground(Color.GRAY);
+        this.setBackground(BACKGROUND_COLOR);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
         this.addMouseMotionListener(new MyMouseAdapter());
         this.addMouseListener(new MyMouseAdapter());
         initColorButton();
+        initBrushButton();
+        initEraserButton();
         this.add(colorButton);
+        this.add(brushButton);
+        this.add(eraserButton);
         start();
+    }
+
+    private void initBrushButton() {
+        brushButton = new JButton("Brush");
+        brushButton.addActionListener(this);
+        brushButton.setPreferredSize(new Dimension(300,60));
+        brushButton.setOpaque(true);
+    }
+
+    private void initEraserButton() {
+        eraserButton = new JButton("eraser");
+        eraserButton.addActionListener(this);
+        eraserButton.setPreferredSize(new Dimension(300,40));
+        eraserButton.setOpaque(true);
     }
 
 
@@ -59,14 +80,20 @@ public class CanvasPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(running) {
-          handleFocus();
+            handleFocus();
 
-            color = COLOR_WHEEL_PANEL.getColor();
-            System.out.println(this.hasFocus());
+            if(!eraserActive) {
+                color = COLOR_WHEEL_PANEL.getColor();
+            }
 
             if (e.getSource() == colorButton) {
                 COLOR_WHEEL_FRAME.setVisible(true);
-                //colorWheelFrame.requestFocus();
+                COLOR_WHEEL_FRAME.requestFocus();
+            } else if (e.getSource() == eraserButton) {
+                eraserActive = true;
+                color = Color.WHITE;
+            } else if (e.getSource() == brushButton) {
+                eraserActive = false;
             }
         }
     }
@@ -112,7 +139,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
 
             double mouseSpeed = ((double) distanceBetweenPoints /elapsedTimeSec)*10;
 
-            if (distanceBetweenPoints < distanceThreshold || mouseSpeed > 0.5) {
+            if (distanceBetweenPoints < distanceThreshold || mouseSpeed > .75) {
                 int dx = Math.abs(endX - startX);
 
                 int dy = Math.abs(endY - startY);

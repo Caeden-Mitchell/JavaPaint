@@ -5,11 +5,11 @@ import java.awt.*;
 public class ColorHandler {
     int hue;
     double saturation;
-    double value = 1.0;
+    double value = 0;
     int redValue;
     int greenValue;
     int blueValue;
-    Color rgbColor;
+    Color rgbColor = Color.black;
 
     public void setValue(double var) {
         value = var;
@@ -40,7 +40,7 @@ public class ColorHandler {
     }
 
     public Color getRgbColor() {
-        return rgbColor = hsvToRgb(hue, saturation, value);
+        return rgbColor;
     }
 
 
