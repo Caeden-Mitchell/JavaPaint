@@ -90,7 +90,6 @@ public class ColorWheelPanel extends JComponent {
         g.drawRect(1,1,56,56);
         g.setColor(getColor());
         g.fillRect(2,2,55,55);
-
     }
 
     private int checkAngle(int y, int x) {

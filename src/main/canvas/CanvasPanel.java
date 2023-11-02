@@ -6,6 +6,7 @@ import main.color.ColorWheelPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 
 public class CanvasPanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 1000;
@@ -22,10 +23,18 @@ public class CanvasPanel extends JPanel implements ActionListener {
     JButton brushButton;
     Color color;
 
+    Point point = new Point(0,0);
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+
+    Image img1 = toolkit.getImage(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("brush-icon")).toString());
+
+    Cursor cursor1 = toolkit.createCustomCursor(img1, point, "CodeSpeedy");
+
     boolean running = false;
     boolean eraserActive = false;
 
     CanvasPanel() {
+        this.setCursor(cursor1);
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(BACKGROUND_COLOR);
         this.setFocusable(true);
@@ -44,14 +53,14 @@ public class CanvasPanel extends JPanel implements ActionListener {
     private void initBrushButton() {
         brushButton = new JButton("Brush");
         brushButton.addActionListener(this);
-        brushButton.setPreferredSize(new Dimension(300,60));
+        brushButton.setPreferredSize(new Dimension(100,40));
         brushButton.setOpaque(true);
     }
 
     private void initEraserButton() {
         eraserButton = new JButton("eraser");
         eraserButton.addActionListener(this);
-        eraserButton.setPreferredSize(new Dimension(300,40));
+        eraserButton.setPreferredSize(new Dimension(100,40));
         eraserButton.setOpaque(true);
     }
 
