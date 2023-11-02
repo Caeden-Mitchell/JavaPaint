@@ -61,13 +61,14 @@ public class CanvasPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(running) {
-            handleFocus();
+          handleFocus();
 
             color = colorWheel.getColor();
+            System.out.println(this.hasFocus());
 
             if (e.getSource() == colorButton) {
                 colorWheelFrame.setVisible(true);
-                colorWheelFrame.requestFocus();
+                //colorWheelFrame.requestFocus();
             }
         }
     }

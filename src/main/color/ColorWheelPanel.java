@@ -26,7 +26,7 @@ public class ColorWheelPanel extends JComponent {
     public ColorWheelPanel() {
         setPreferredSize(new Dimension(400, 450));
         addMouseListener(new MyMouseListener());
-        addMouseMotionListener(new MyMouseListener());
+        //addMouseMotionListener(new MyMouseListener());
         setFocusable(false);
     }
 
@@ -88,9 +88,9 @@ public class ColorWheelPanel extends JComponent {
 
     private void drawColorPreview(Graphics g) {
         g.setColor(Color.black);
-        g.drawRect(0,0,56,56);
+        g.drawRect(1,1,57,57);
         g.setColor(getColor());
-        g.fillRect(1,1,55,55);
+        g.fillRect(2,2,55,55);
 
     }
 
@@ -125,6 +125,8 @@ public class ColorWheelPanel extends JComponent {
                 colorHandler.setHue(angle);
                 colorHandler.setSaturation(distanceFromRadius/RADIUS);
                 colorHandler.setRgbColor();
+
+                initialColor = colorHandler.hsvToRgb(angle,1.0, 1.0);
             } else if (x >= 10 && x <= 390 && y >= 405) {
                 sliderX = x;
                 colorHandler.setValue((double) (x - 10)/380);

@@ -32,9 +32,9 @@ public class ColorHandler {
     }
 
     public void setRgbColor() {
-        //System.out.println("red: " + redValue );
-        //System.out.println("green: " + greenValue);
-        //System.out.println("blue: " + blueValue);
+        System.out.println("red: " + redValue );
+        System.out.println("green: " + greenValue);
+        System.out.println("blue: " + blueValue);
         rgbColor = hsvToRgb(hue, saturation, value);
 
     }
