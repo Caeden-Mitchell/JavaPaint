@@ -5,8 +5,6 @@ import main.color.ColorWheelPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.*;
 
 public class CanvasPanel extends JPanel implements ActionListener {
@@ -17,8 +15,8 @@ public class CanvasPanel extends JPanel implements ActionListener {
     static final int DELAY = 75;
     Timer timer;
 
-    ColorWheelPanel colorWheel = new ColorWheelPanel();
-    ColorWheelFrame colorWheelFrame = new ColorWheelFrame();
+    final ColorWheelPanel COLOR_WHEEL_PANEL = new ColorWheelPanel();
+    final ColorWheelFrame COLOR_WHEEL_FRAME = new ColorWheelFrame();
     JButton colorButton;
     Color color;
 
@@ -53,7 +51,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
     }
 
     private void handleFocus() {
-        if (!colorWheelFrame.hasFocus()) {
+        if (!COLOR_WHEEL_FRAME.hasFocus()) {
             this.requestFocus();
         }
     }
@@ -63,11 +61,11 @@ public class CanvasPanel extends JPanel implements ActionListener {
         if(running) {
           handleFocus();
 
-            color = colorWheel.getColor();
+            color = COLOR_WHEEL_PANEL.getColor();
             System.out.println(this.hasFocus());
 
             if (e.getSource() == colorButton) {
-                colorWheelFrame.setVisible(true);
+                COLOR_WHEEL_FRAME.setVisible(true);
                 //colorWheelFrame.requestFocus();
             }
         }

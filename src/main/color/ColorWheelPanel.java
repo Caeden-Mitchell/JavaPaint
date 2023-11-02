@@ -21,7 +21,7 @@ public class ColorWheelPanel extends JComponent {
     Color initialColor = Color.white;
 
 
-    static ColorHandler colorHandler = new ColorHandler();
+    static final ColorHandler COLOR_HANDLER = new ColorHandler();
 
     public ColorWheelPanel() {
         setPreferredSize(new Dimension(400, 450));
@@ -103,7 +103,7 @@ public class ColorWheelPanel extends JComponent {
     }
 
     public Color getColor() {
-        return colorHandler.getRgbColor();
+        return COLOR_HANDLER.getRgbColor();
     }
 
     public class MyMouseListener extends MouseAdapter {
@@ -122,14 +122,14 @@ public class ColorWheelPanel extends JComponent {
                 circleY = y;
 
                 angle = checkAngle(yCoord, xCoord);
-                colorHandler.setHue(angle);
-                colorHandler.setSaturation(distanceFromRadius/RADIUS);
-                colorHandler.setRgbColor();
+                COLOR_HANDLER.setHue(angle);
+                COLOR_HANDLER.setSaturation(distanceFromRadius/RADIUS);
+                COLOR_HANDLER.setRgbColor();
 
-                initialColor = colorHandler.hsvToRgb(angle,1.0, 1.0);
+                initialColor = COLOR_HANDLER.hsvToRgb(angle,1.0, 1.0);
             } else if (x >= 10 && x <= 390 && y >= 405) {
                 sliderX = x;
-                colorHandler.setValue((double) (x - 10)/380);
+                COLOR_HANDLER.setValue((double) (x - 10)/380);
             }
         }
     }
