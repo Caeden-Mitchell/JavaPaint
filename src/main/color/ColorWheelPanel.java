@@ -1,13 +1,11 @@
 package main.color;
 
-import javax.imageio.ImageIO;
+import main.fileHandling.FileHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class ColorWheelPanel extends JComponent {
     final String FILE_NAME = "Color_Wheel.png";
@@ -19,8 +17,8 @@ public class ColorWheelPanel extends JComponent {
 
     Color initialColor = Color.white;
 
-
     static final ColorHandler COLOR_HANDLER = new ColorHandler();
+    static final FileHandler FILE_HANDLER = new FileHandler();
 
     public ColorWheelPanel() {
         setPreferredSize(new Dimension(400, 450));
@@ -29,31 +27,8 @@ public class ColorWheelPanel extends JComponent {
         setFocusable(false);
     }
 
-    private BufferedImage getImage() {
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(getFileFromResourceAsStream());
-        } catch (IOException ignored) {
-
-        }
-        return image;
-    }
-
-    private InputStream getFileFromResourceAsStream() {
-        // The class loader that loaded the class
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(FILE_NAME);
-
-        // the stream holding the file content
-        if (inputStream == null) {
-            throw new IllegalArgumentException("file not found! " + FILE_NAME);
-        } else {
-            return inputStream;
-        }
-    }
-
     public void paint(Graphics g) {
-        g.drawImage(getImage(),0,0,this);
+        g.drawImage(FILE_HANDLER.getBufferedImageFromStream("Color_Wheel.png"),0,0,this);
         drawColorPreview(g);
         drawBrightnessSlider(g);
 

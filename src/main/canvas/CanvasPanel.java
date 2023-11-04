@@ -2,11 +2,11 @@ package main.canvas;
 
 import main.color.ColorWheelFrame;
 import main.color.ColorWheelPanel;
+import main.fileHandling.FileHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Objects;
 
 public class CanvasPanel extends JPanel implements ActionListener {
     static final int SCREEN_WIDTH = 1000;
@@ -18,6 +18,8 @@ public class CanvasPanel extends JPanel implements ActionListener {
 
     final ColorWheelPanel COLOR_WHEEL_PANEL = new ColorWheelPanel();
     final ColorWheelFrame COLOR_WHEEL_FRAME = new ColorWheelFrame();
+    final FileHandler FILE_HANDLER = new FileHandler();
+
     JButton colorButton;
     JButton eraserButton;
     JButton brushButton;
@@ -26,28 +28,35 @@ public class CanvasPanel extends JPanel implements ActionListener {
     Point point = new Point(0,0);
     Toolkit toolkit = Toolkit.getDefaultToolkit();
 
-    Image img1 = toolkit.getImage(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("brush-icon")).toString());
+    Image brushImage = FILE_HANDLER.getBufferedImageFromStream("brush-icon.png");
+    Image eraserImage = FILE_HANDLER.getBufferedImageFromStream("eraser-icon.png");
 
-    Cursor cursor1 = toolkit.createCustomCursor(img1, point, "CodeSpeedy");
+    Cursor brushCursor = toolkit.createCustomCursor(brushImage, point, "brush");
+    Cursor eraserCursor = toolkit.createCustomCursor(eraserImage, point, "eraser");
 
     boolean running = false;
     boolean eraserActive = false;
 
     CanvasPanel() {
-        this.setCursor(cursor1);
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.setBackground(BACKGROUND_COLOR);
-        this.setFocusable(true);
-        this.addKeyListener(new MyKeyAdapter());
-        this.addMouseMotionListener(new MyMouseAdapter());
-        this.addMouseListener(new MyMouseAdapter());
+        initPanel();
+        initListeners();
         initColorButton();
         initBrushButton();
         initEraserButton();
-        this.add(colorButton);
-        this.add(brushButton);
-        this.add(eraserButton);
+
         start();
+    }
+
+    private void initPanel(){
+        this.setCursor(brushCursor);
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        this.setBackground(BACKGROUND_COLOR);
+        this.setFocusable(true);
+    }
+
+    private void initListeners(){
+        this.addMouseMotionListener(new MyMouseAdapter());
+        this.addMouseListener(new MyMouseAdapter());
     }
 
     private void initBrushButton() {
@@ -55,6 +64,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
         brushButton.addActionListener(this);
         brushButton.setPreferredSize(new Dimension(100,40));
         brushButton.setOpaque(true);
+        this.add(brushButton);
     }
 
     private void initEraserButton() {
@@ -62,16 +72,15 @@ public class CanvasPanel extends JPanel implements ActionListener {
         eraserButton.addActionListener(this);
         eraserButton.setPreferredSize(new Dimension(100,40));
         eraserButton.setOpaque(true);
+        this.add(eraserButton);
     }
-
 
     private void initColorButton() {
         colorButton = new JButton("Colour");
         colorButton.addActionListener(this);
         colorButton.setPreferredSize(new Dimension(100,40));
         colorButton.setOpaque(true);
-        //colorButton.setBackground(Color.black);
-
+        this.add(colorButton);
     }
     
     private void start() {
@@ -100,8 +109,10 @@ public class CanvasPanel extends JPanel implements ActionListener {
                 COLOR_WHEEL_FRAME.requestFocus();
             } else if (e.getSource() == eraserButton) {
                 eraserActive = true;
+                this.setCursor(eraserCursor);
                 color = Color.WHITE;
             } else if (e.getSource() == brushButton) {
+                this.setCursor(brushCursor);
                 eraserActive = false;
             }
         }
@@ -188,24 +199,6 @@ public class CanvasPanel extends JPanel implements ActionListener {
                         startY = startY + sy;
                     }
                 }
-            }
-        }
-    }
-
-
-    public class MyKeyAdapter extends KeyAdapter {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_1 -> color = Color.BLACK;
-                case KeyEvent.VK_2 -> color = Color.blue;
-                case KeyEvent.VK_3 -> color = Color.green;
-                case KeyEvent.VK_4 -> color = Color.red;
-                case KeyEvent.VK_5 -> color = Color.orange;
-                case KeyEvent.VK_6 -> color = Color.pink;
-                case KeyEvent.VK_7 -> color = Color.yellow;
-                case KeyEvent.VK_8 -> color = new Color(139, 0, 255);//purple
-                case KeyEvent.VK_9 -> color = new Color(255, 255, 255);//white
             }
         }
     }
