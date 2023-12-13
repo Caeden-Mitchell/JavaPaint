@@ -5,6 +5,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * This is another util class I made, all it does is access
+ * external files contained within a resource folder. This
+ * class has been made generic, so I can use it in other applications.
+ * I am using it to fetch the png's in the resource folder for custom
+ * cursor's.
+ */
+
 public class FileHandler {
     public InputStream getFileFromResourceAsStream(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();

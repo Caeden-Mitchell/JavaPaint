@@ -1,16 +1,23 @@
 package main.color;
-
 import java.awt.*;
 
-public class ColorHandler {
-    int hue;
-    double saturation;
-    double value = 0;
-    int redValue;
-    int greenValue;
-    int blueValue;
-    Color rgbColor = Color.black;
+/**
+ * this class is one of the util classes I made. It handles
+ * colour conversion between HSV and RGB and can be used in
+ * other applications in the future.
+ */
 
+public class ColorHandler {
+    private int hue;
+    private double saturation;
+    private double value = 0;
+    private int redValue;
+    private int greenValue;
+    private int blueValue;
+    private Color rgbColor = Color.black;
+
+
+    //These methods are all setters and getters for the variables contained in this class
     public void setValue(double var) {
         value = var;
     }
@@ -36,7 +43,6 @@ public class ColorHandler {
         System.out.println("green: " + greenValue);
         System.out.println("blue: " + blueValue);
         rgbColor = hsvToRgb(hue, saturation, value);
-
     }
 
     public Color getRgbColor() {
@@ -44,6 +50,12 @@ public class ColorHandler {
     }
 
 
+    /*
+     * This method converts hsv to rgb so java can understand it.
+     * The conversion method used came from wikipedia, so if you
+     * wish to understand don't attempt to read the code just
+     * lookup hsv to rgb wikipedia and that has an in depth explanation.
+     */
     public Color hsvToRgb(int h, double s, double v) {
         double hp = h/60.0;
         double chroma = s * v;
