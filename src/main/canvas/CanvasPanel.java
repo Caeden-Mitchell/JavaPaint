@@ -14,8 +14,8 @@ import java.awt.event.*;
  */
 
 public class CanvasPanel extends JPanel implements ActionListener {
-    static final int SCREEN_WIDTH = 1000;
-    static final int SCREEN_HEIGHT = 1000;
+    static final int SCREEN_WIDTH = 700;
+    static final int SCREEN_HEIGHT = 700;
     static final Color BACKGROUND_COLOR = Color.white;
 
     static final int DELAY = 75;
@@ -37,6 +37,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
 
     boolean running = false;
     boolean eraserActive = false;
+    int brushSize = 10;
 
     CanvasPanel() {
         initPanel();
@@ -84,6 +85,8 @@ public class CanvasPanel extends JPanel implements ActionListener {
                 color = COLOR_WHEEL_PANEL.getColor();
             }
 
+            brushSize = ToolbarPanel.getBrushSize();
+
             if (ToolbarPanel.getButtonType() == 1) { // if the button clicked in toolbar is the colour button
                 COLOR_WHEEL_FRAME.setVisible(true);
                 COLOR_WHEEL_FRAME.requestFocus();
@@ -95,7 +98,6 @@ public class CanvasPanel extends JPanel implements ActionListener {
                 this.setCursor(eraserCursor);
                 color = Color.WHITE;
             }
-
             ToolbarPanel.setButtonType(0);
         }
     }
@@ -115,7 +117,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
 
             elapsedTimeSec =  (System.nanoTime() - start) /100000;
 
-            if (prevX >= -10 && prevY >= 0) {
+            if (prevX >= -100 && prevY >= -100) {
                 drawLineBetweenPoints(prevX, prevY, x, y);
             }
 
@@ -169,7 +171,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
                 int tempError;
 
                 while (true) {
-                    g.fillOval(startX, startY, 10, 10);
+                    g.fillOval(startX - brushSize/2, startY - brushSize/2, brushSize, brushSize);
 
                     if (startX == endX && startY == endY) {
                         break;

@@ -12,12 +12,20 @@ public class CanvasFrame extends JFrame {
     public CanvasFrame() {
         // Everything underneath this comment is done so the two panels
         // added will format correctly within the frame. It's a layout manager.
+
         GridBagConstraints c = new GridBagConstraints();
         this.setLayout(new GridBagLayout());
         c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
         c.gridx = 0;
         c.gridy = 0;
+        c.weightx = .1;
+        c.weighty = 0.1;
         this.add(new ToolbarPanel(), c);
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.weightx = 0;
+        c.weighty = 0;
         c.gridy = 1;
         this.add(new CanvasPanel(), c);
 
@@ -26,7 +34,7 @@ public class CanvasFrame extends JFrame {
         // window is closed
         this.setTitle("Etch-a-Sketch");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setResizable(false);
+        //this.setResizable(false);
         this.pack(); // Packs everything that has been added to frame nicely
         this.setVisible(true);
 
