@@ -48,7 +48,6 @@ public class CanvasPanel extends JPanel implements ActionListener {
     // initializes the panel on startup
     private void initPanel(){
         this.setCursor(brushCursor);
-
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(BACKGROUND_COLOR);
         this.setFocusable(true);
@@ -115,7 +114,7 @@ public class CanvasPanel extends JPanel implements ActionListener {
             int x = e.getX();
             int y = e.getY();
 
-            elapsedTimeSec =  (System.nanoTime() - start) /100000;
+            elapsedTimeSec =  (System.nanoTime() - start)/100000;
 
             if (prevX >= -100 && prevY >= -100) {
                 drawLineBetweenPoints(prevX, prevY, x, y);

@@ -58,7 +58,6 @@ public class ToolbarPanel extends JPanel implements ActionListener {
         brushButton = new JButton(brushIcon);
         brushButton.addActionListener(this);
         brushButton.setPreferredSize(new Dimension(40,40));
-       // brushButton.setOpaque(true);
         brushButton.setBorder(null);
         brushButton.setBackground(null);
         this.add(brushButton);
@@ -68,7 +67,6 @@ public class ToolbarPanel extends JPanel implements ActionListener {
         brushSizeButton = new JButton(burshSizeIcon);
         brushSizeButton.addActionListener(this);
         brushSizeButton.setPreferredSize(new Dimension(40,40));
-       // brushSizeButton.setOpaque(true);
         brushSizeButton.setBorder(null);
         brushSizeButton.setBackground(null);
         this.add(brushSizeButton);
@@ -78,8 +76,7 @@ public class ToolbarPanel extends JPanel implements ActionListener {
         eraserButton = new JButton(eraserIcon);
         eraserButton.addActionListener(this);
         eraserButton.setPreferredSize(new Dimension(40,40));
-        //eraserButton.setOpaque(true);
-        eraserButton.setBorder();
+        eraserButton.setBorder(null);
         eraserButton.setBackground(null);
         this.add(eraserButton);
     }
